@@ -6,60 +6,89 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+
 
 import ru.geekbrains.base.BaseScreen;
+import ru.geekbrains.math.Rect;
+import ru.geekbrains.sprite.Background;
+import ru.geekbrains.sprite.Logo;
 
 public class MenuScreen extends BaseScreen {
-   private Texture img;
-   private Vector2 touch;
-   private Vector2 v;
-   private Vector2 pos;
-   private Vector2 buff;
+   private Texture bg;
+   private Background background;
+   private Texture superCat;
+   private Logo logo;
+
+    private Vector2 buff;
+    private Vector2 v;
+    private Vector2 touch;
+    private final float V_LEN = 0.01f;
+
+
+
+
 
 
 
     @Override
     public void show() {
         super.show();
-        img = new Texture("SuperCat.jpg");
-        touch = new Vector2();
-        v = new Vector2(1,1);
-        pos = new Vector2(0,0);
-        buff = new Vector2();
+       bg = new Texture("texture/bg.png");
+       background = new Background(bg);
+       superCat = new Texture("SuperCat.jpg");
+       logo = new Logo(superCat);
+       buff = new Vector2();
+       v = new Vector2();
+       touch = new Vector2();
+
 
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.7f, 0.1f, 0.5f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
-        batch.draw(img, pos.x , pos.y);
-        batch.end();
+        super.render(delta);
 
-        buff = touch.sub(pos); // высчитываем вектор направление до точки нажатия мыши и сохраняем в буферный вектор
-        if (pos.x!=buff.x){   // теперь картинка двигается только после нашего нажатия
-            pos.add(v);
-        }
+        batch.begin();
+        background.draw(batch);
+        logo.draw(batch);
+        batch.end();
+        //stopImg();
+        logo.pos.add(v);
 
 
     }
 
     @Override
     public void dispose() {
-        img.dispose();
+        bg.dispose();
+        superCat.dispose();
         super.dispose();
     }
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        touch.set(screenX,Gdx.graphics.getHeight() - screenY);
-        pos.x = touch.x;
-        pos.y = touch.y;
-        return super.touchDown(screenX, screenY, pointer, button);
+    public void resize(Rect worldBounds) {
 
+        background.resize(worldBounds);
+        logo.resize(worldBounds);
+    }
+
+    @Override
+    public boolean touchDown(Vector2 touch, int pointer, int button) {
+
+        v.set(touch.cpy().sub(logo.pos)).setLength(V_LEN);
+        System.out.println(v.x + "  " + v.y);
+        return false;
+    }
+
+
+    public void stopImg (){
+
+          buff.set(touch);
+          if (buff.sub(logo.pos).len() > v.len()) {
+              logo.pos.add(v);
+          } else {
+              logo.pos.set(touch);
+           }
     }
 
 }
