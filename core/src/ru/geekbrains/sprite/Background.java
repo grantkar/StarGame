@@ -10,6 +10,7 @@ public class Background extends Sprite {
 
     public Background(Texture texture) {
         super(new TextureRegion(texture));
+
     }
 
     @Override
