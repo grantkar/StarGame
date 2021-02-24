@@ -99,14 +99,14 @@ public class MainShip extends Ship {
 
 
     public boolean keyDown(int keycode) {
-        switch (keycode){
+        switch (keycode) {
             case Input.Keys.A:
             case Input.Keys.LEFT:
                 moveLeft();
                 pressedLeft = true;
                 break;
             case Input.Keys.D:
-            case  Input.Keys.RIGHT:
+            case Input.Keys.RIGHT:
                 moveRight();
                 pressedRight = true;
                 break;
@@ -116,20 +116,20 @@ public class MainShip extends Ship {
 
 
     public boolean keyUp(int keycode) {
-        switch (keycode){
+        switch (keycode) {
             case Input.Keys.A:
             case Input.Keys.LEFT:
                 pressedLeft = false;
-                if (pressedRight){
+                if (pressedRight) {
                     moveRight();
                 } else {
                     stop();
                 }
                 break;
             case Input.Keys.D:
-            case  Input.Keys.RIGHT:
+            case Input.Keys.RIGHT:
                 pressedRight = false;
-                if (pressedLeft){
+                if (pressedLeft) {
                     moveLeft();
                 } else {
                     stop();
