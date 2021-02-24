@@ -26,7 +26,7 @@ public class Bullet extends Sprite {
             float height,
             Rect worldBounds,
             int damage
-    ){
+    ) {
         this.owner = owner;
         regions[0] = region;
         pos.set(pos0);
@@ -35,7 +35,6 @@ public class Bullet extends Sprite {
         this.worldBounds = worldBounds;
         this.damage = damage;
     }
-
 
     @Override
     public void update(float delta) {

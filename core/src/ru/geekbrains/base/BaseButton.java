@@ -10,11 +10,9 @@ public abstract class BaseButton extends Sprite {
     private int pointer;
     private boolean pressed;
 
-
     public BaseButton(TextureRegion region) {
         super(region);
     }
-
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
@@ -29,10 +27,10 @@ public abstract class BaseButton extends Sprite {
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer, int button) {
-        if (this.pointer != pointer || !pressed){
+        if (this.pointer != pointer || !pressed) {
             return false;
         }
-        if (isMe(touch)){
+        if (isMe(touch)) {
             action();
         }
         pressed = false;

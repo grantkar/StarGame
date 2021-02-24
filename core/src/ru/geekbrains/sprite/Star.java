@@ -1,7 +1,6 @@
 package ru.geekbrains.sprite;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.base.Sprite;
@@ -10,28 +9,25 @@ import ru.geekbrains.math.Rnd;
 
 public class Star extends Sprite {
 
-    private static final float HEIGHT = 0.01f;
-
     private final Vector2 v;
     private Rect worldBounds;
-
 
     public Star(TextureAtlas atlas) {
         super(atlas.findRegion("star"));
         setHeightProportion(Rnd.nextFloat(0.005f, 0.015f));
-        v = new Vector2(Rnd.nextFloat(-0.005f, 0.005f), getHeight()* -10);
+        v = new Vector2(Rnd.nextFloat(-0.005f, 0.005f), getHeight() * -10);
     }
 
     @Override
     public void update(float delta) {
         pos.mulAdd(v, delta);
-        if (getRight() < worldBounds.getLeft()){
+        if (getRight() < worldBounds.getLeft()) {
             setLeft(worldBounds.getRight());
         }
-        if (getLeft() > worldBounds.getRight()){
+        if (getLeft() > worldBounds.getRight()) {
             setRight(worldBounds.getLeft());
         }
-        if (getTop() < worldBounds.getBottom()){
+        if (getTop() < worldBounds.getBottom()) {
             setBottom(worldBounds.getTop());
         }
     }

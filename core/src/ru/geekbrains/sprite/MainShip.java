@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.base.Ship;
 import ru.geekbrains.math.Rect;
 import ru.geekbrains.pool.BulletPool;
+import ru.geekbrains.pool.ExplosionPool;
 
 public class MainShip extends Ship {
 
@@ -21,14 +22,13 @@ public class MainShip extends Ship {
     private int leftPointer = INVALID_POINTER;
     private int rightPointer = INVALID_POINTER;
 
-
-
-    public MainShip(TextureAtlas atlas, BulletPool bulletPool) {
+    public MainShip(TextureAtlas atlas, BulletPool bulletPool, ExplosionPool explosionPool) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
         this.bulletPool = bulletPool;
+        this.explosionPool = explosionPool;
         this.bulletRegion = atlas.findRegion("bulletMainShip");
         v = new Vector2();
-        v0 = new Vector2();
+        v0 = new Vector2(0.5f, 0);
         bulletV = new Vector2(0, 0.5f);
         bulletPos = new Vector2();
         bulletHeight = 0.01f;
@@ -49,11 +49,11 @@ public class MainShip extends Ship {
     public void update(float delta) {
         super.update(delta);
         bulletPos.set(pos.x, pos.y + getHalfHeight());
-        if (getRight() > worldBounds.getRight()){
+        if (getRight() > worldBounds.getRight()) {
             setRight(worldBounds.getRight());
             stop();
         }
-        if (getLeft() < worldBounds.getLeft()){
+        if (getLeft() < worldBounds.getLeft()) {
             setLeft(worldBounds.getLeft());
             stop();
         }
@@ -61,8 +61,8 @@ public class MainShip extends Ship {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
-        if (touch.x < worldBounds.pos.x){
-            if (leftPointer != INVALID_POINTER){
+        if (touch.x < worldBounds.pos.x) {
+            if (leftPointer != INVALID_POINTER) {
                 return false;
             }
             leftPointer = pointer;
@@ -81,14 +81,14 @@ public class MainShip extends Ship {
     public boolean touchUp(Vector2 touch, int pointer, int button) {
         if (pointer == leftPointer) {
             leftPointer = INVALID_POINTER;
-            if (rightPointer != INVALID_POINTER){
+            if (rightPointer != INVALID_POINTER) {
                 moveRight();
             } else {
                 stop();
             }
-        } else if (pointer == rightPointer){
+        } else if (pointer == rightPointer) {
             rightPointer = INVALID_POINTER;
-            if (leftPointer != INVALID_POINTER){
+            if (leftPointer != INVALID_POINTER) {
                 moveLeft();
             } else {
                 stop();
@@ -97,16 +97,15 @@ public class MainShip extends Ship {
         return false;
     }
 
-
     public boolean keyDown(int keycode) {
-        switch (keycode){
+        switch (keycode) {
             case Input.Keys.A:
             case Input.Keys.LEFT:
                 moveLeft();
                 pressedLeft = true;
                 break;
             case Input.Keys.D:
-            case  Input.Keys.RIGHT:
+            case Input.Keys.RIGHT:
                 moveRight();
                 pressedRight = true;
                 break;
@@ -114,22 +113,21 @@ public class MainShip extends Ship {
         return false;
     }
 
-
     public boolean keyUp(int keycode) {
-        switch (keycode){
+        switch (keycode) {
             case Input.Keys.A:
             case Input.Keys.LEFT:
                 pressedLeft = false;
-                if (pressedRight){
+                if (pressedRight) {
                     moveRight();
                 } else {
                     stop();
                 }
                 break;
             case Input.Keys.D:
-            case  Input.Keys.RIGHT:
+            case Input.Keys.RIGHT:
                 pressedRight = false;
-                if (pressedLeft){
+                if (pressedLeft) {
                     moveLeft();
                 } else {
                     stop();
@@ -139,19 +137,28 @@ public class MainShip extends Ship {
         return false;
     }
 
-    public void dispose(){
+    public void dispose() {
         sound.dispose();
     }
 
-    private void moveRight(){
+    public boolean isBulletCollision(Rect bullet) {
+        return !(bullet.getRight() < getLeft()
+                || bullet.getLeft() > getRight()
+                || bullet.getBottom() > pos.y
+                || bullet.getTop() < getBottom()
+        );
+    }
+
+    private void moveRight() {
         v.set(v0);
     }
 
-    private void moveLeft(){
+    private void moveLeft() {
         v.set(v0).rotate(180);
     }
 
     private void stop() {
         v.setZero();
     }
+
 }

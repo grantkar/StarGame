@@ -16,7 +16,6 @@ public class Sprite extends Rect {
     private boolean isDestroyed;
 
     public Sprite() {
-
     }
 
     public Sprite(TextureRegion region) {
@@ -27,12 +26,11 @@ public class Sprite extends Rect {
         regions[0] = region;
     }
 
-    public Sprite(TextureRegion region, int rows, int cols, int frames){
+    public Sprite(TextureRegion region, int rows, int cols, int frames) {
         if (region == null) {
             throw new RuntimeException("Region is null");
         }
         regions = Regions.split(region, rows, cols, frames);
-
     }
 
     public void setHeightProportion(float height) {
@@ -88,11 +86,11 @@ public class Sprite extends Rect {
         this.scale = scale;
     }
 
-    public void destroy(){
+    public void destroy() {
         isDestroyed = true;
     }
 
-    public void flushDestroy(){
+    public void flushDestroy() {
         isDestroyed = false;
     }
 
