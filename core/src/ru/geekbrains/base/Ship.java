@@ -76,6 +76,10 @@ public class Ship extends Sprite {
         return damage;
     }
 
+    public Vector2 getV() {
+        return v;
+    }
+
     private void shoot() {
         Bullet bullet = bulletPool.obtain();
         bullet.set(this, bulletRegion, bulletPos, bulletV, bulletHeight, worldBounds, damage);
@@ -85,5 +89,9 @@ public class Ship extends Sprite {
     private void boom() {
         Explosion explosion = explosionPool.obtain();
         explosion.set(getHeight(), pos);
+    }
+
+    public int getHp() {
+        return hp;
     }
 }
