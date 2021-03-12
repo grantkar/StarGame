@@ -12,6 +12,7 @@ import ru.geekbrains.math.Rect;
 import ru.geekbrains.sprite.Background;
 import ru.geekbrains.sprite.ButtonExit;
 import ru.geekbrains.sprite.ButtonPlay;
+import ru.geekbrains.sprite.MenuMainShip;
 import ru.geekbrains.sprite.Star;
 
 public class MenuScreen extends BaseScreen {
@@ -22,12 +23,15 @@ public class MenuScreen extends BaseScreen {
 
     private Texture bg;
     private TextureAtlas atlas;
+    private TextureAtlas atlasShip;
 
     private Background background;
     private Star[] stars;
 
     private ButtonExit buttonExit;
     private ButtonPlay buttonPlay;
+
+    private MenuMainShip mainShip;
 
     public MenuScreen(Game game) {
         this.game = game;
@@ -38,6 +42,7 @@ public class MenuScreen extends BaseScreen {
         super.show();
         bg = new Texture("textures/bg.png");
         atlas = new TextureAtlas(Gdx.files.internal("textures/menuAtlas.tpack"));
+        atlasShip = new TextureAtlas(Gdx.files.internal("textures/mainAtlas.tpack"));
         background = new Background(bg);
         stars = new Star[STAR_COUNT];
         for (int i = 0; i < STAR_COUNT; i++) {
@@ -45,6 +50,8 @@ public class MenuScreen extends BaseScreen {
         }
         buttonExit = new ButtonExit(atlas);
         buttonPlay = new ButtonPlay(atlas, game);
+
+        mainShip = new MenuMainShip(atlasShip);
     }
 
     @Override
@@ -57,6 +64,7 @@ public class MenuScreen extends BaseScreen {
     public void dispose() {
         bg.dispose();
         atlas.dispose();
+        atlasShip.dispose();
         super.dispose();
     }
 
@@ -68,6 +76,8 @@ public class MenuScreen extends BaseScreen {
         }
         buttonExit.resize(worldBounds);
         buttonPlay.resize(worldBounds);
+
+        mainShip.resize(worldBounds);
     }
 
     @Override
@@ -100,6 +110,7 @@ public class MenuScreen extends BaseScreen {
         }
         buttonExit.draw(batch);
         buttonPlay.draw(batch);
+        mainShip.draw(batch);
         batch.end();
     }
 }
